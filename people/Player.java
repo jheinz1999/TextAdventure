@@ -2,6 +2,8 @@ package people;
 
 import items.Inventory;
 import main.Main;
+import java.util.HashMap;
+import java.util.Vector;
 
 public class Player {
 	
@@ -14,6 +16,8 @@ public class Player {
 		name = "";
 		
 		inv = new Inventory();
+		quests = new HashMap<Integer, String>();
+		finishedQuests = new Vector<Integer>();
 		
 	}
 
@@ -316,10 +320,48 @@ public class Player {
 		
 	}
 	
+	public void printQuests() {
+		
+		System.out.println("------------------------------------");
+		System.out.println();
+		System.out.println("              Quests");
+		System.out.println();
+		System.out.println("------------------------------------");
+		System.out.println();
+		
+		for (String value : quests.values()) {
+			
+			System.out.println("- " + value);
+			
+		}
+		
+	}
+	
+	public void addQuest(int id, String value) {
+		
+		quests.put(id, value);
+		
+	}
+	
+	public void setQuestFinished(int id) {
+		
+		quests.remove(id);
+		finishedQuests.add(id);
+		
+	}
+	
+	public boolean hasCompletedQuest(int id) {
+		
+		return finishedQuests.contains(id);
+		
+	}
+	
 	private float health, maxHealth;
 	private String name;
 	private int specialty;
 	private Inventory inv;
 	private int attack, defense, magic, intelligence, speed, mana, maxMana;
+	private HashMap<Integer, String> quests;
+	private Vector<Integer> finishedQuests;
 	
 }

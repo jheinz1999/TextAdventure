@@ -13,8 +13,11 @@ public class Inventory {
 
 	public void listInventory() {
 		
-		System.out.println("Inventory:");
-		
+		System.out.println("------------------------------------");
+		System.out.println();
+		System.out.println("              Inventory");
+		System.out.println();
+		System.out.println("------------------------------------");
 		System.out.println();
 		
 		for (Item i : items) {

@@ -13,15 +13,14 @@ public class Person {
 		this.inv = new Inventory();
 
 		this.inv = new Inventory();
-		this.phrases = new HashMap<Integer, String>();
 		
 		this.isAttackable = false;
 		
 	}
 
-	public void sayPhrase() {
+	public void sayPhrase(Player player) {
 		
-		System.out.println(phrases.get(Main.getGameStage()));
+		System.out.println(phrase);
 		
 	}
 	
@@ -37,19 +36,9 @@ public class Person {
 		
 	}
 	
-	public void setPhrase(String phrase, int stage) {
+	public void setPhrase(String phrase) {
 		
-		phrases.put(stage, phrase);
-		
-	}
-	
-	public void setPhrase(String phrase, int stage1, int stage2) {
-		
-		for (int i = stage1; i < stage2; i++) {
-			
-			phrases.put(i, phrase);
-			
-		}
+		this.phrase = phrase;
 		
 	}
 	
@@ -71,7 +60,7 @@ public class Person {
 		
 	}
 	
-	public boolean takeItem(Item i) {
+	public boolean takeItem(Item i, Player player) {
 		
 		return false;
 		
@@ -91,8 +80,8 @@ public class Person {
 	
 	private String name;
 	private String description;
+	private String phrase;
 	private Inventory inv;
-	private HashMap<Integer, String> phrases;
 	private boolean isAttackable;
 	
 	private int health, maxHealth;

@@ -22,8 +22,7 @@ public class Game {
 		
 		p1.setName("QuestGiver");
 		p1.setPhrase("Greetings, traveler. I am the quest giver.\n" +
-		"I lost my peanut butter sandwich. Can you find it for me?", 0);
-		p1.setPhrase("Thanks for the sandwich bro", 1);
+		"I lost my peanut butter sandwich. Can you find it for me?");
 		p1.setDescription("A smelly hobo with a santa hat");
 		
 		// Item initializations
@@ -167,6 +166,9 @@ public class Game {
 			
 			currentRoom.printDescription();
 			
+			System.out.println();
+			System.out.print("> ");
+			
 			input = inDevice.nextLine();
 			
 			System.out.println();
@@ -277,17 +279,26 @@ public class Game {
 			System.out.printf("%-20s\t\t%s\n", "Give [entity] [item]", "Gives item to entity");
 			System.out.printf("%-20s\t\t%s\n", "Map", "Displays immediate surroundings");
 			System.out.printf("%-20s\t\t%s\n", "Inventory", "Displays inventory contents");
+			System.out.printf("%-20s\t\t%s\n", "Quests", "Shows your current quest");
+			System.out.printf("%-20s\t\t%s\n", "Save", "Saves the game");
 			System.out.printf("%-20s\t\t%s\n", "Quit", "Quits the game");
 			
 		}
 		
 		else if (words[0].equalsIgnoreCase("go")) {
 			
-			if (currentRoom.hasExit(words[1]))
-				currentRoom = currentRoom.getExit(words[1]);
+			if (words.length == 2) {
+			
+				if (currentRoom.hasExit(words[1]))
+					currentRoom = currentRoom.getExit(words[1]);
+				
+				else
+					System.out.println("You can't go that way.");
+				
+			}
 			
 			else
-				System.out.println("You can't go that way.");
+				System.out.println("Go where?");
 			
 		}
 		
@@ -303,7 +314,7 @@ public class Game {
 			
 				if (currentRoom.hasEntity(words[1].toUpperCase())) {
 					
-					currentRoom.getEntity(words[1].toUpperCase()).sayPhrase(); 
+					currentRoom.getEntity(words[1].toUpperCase()).sayPhrase(player1); 
 					
 				}
 				
@@ -402,7 +413,7 @@ public class Game {
 					
 					if (currentRoom.hasEntity(words[1])) {
 						
-						if (currentRoom.getEntity(words[1]).takeItem(player1.getInventory().getItem(words[2]))) {
+						if (currentRoom.getEntity(words[1]).takeItem(player1.getInventory().getItem(words[2]), player1)) {
 							
 							player1.getInventory().removeItem(words[2]);
 							
@@ -425,6 +436,18 @@ public class Game {
 				}
 				
 			}
+			
+		}
+		
+		else if ((words[0]).equalsIgnoreCase("Quests")) {
+			
+			player1.printQuests();
+			
+		}
+		
+		else if (words[0].equalsIgnoreCase("map")) {
+			
+			currentRoom.drawMap();
 			
 		}
 		

@@ -143,6 +143,36 @@ public class Room {
 		
 	}
 	
+	public void drawMap() {
+		
+		if (exits.containsKey("NORTH"))
+			System.out.println("    [ ]");
+		
+		else
+			System.out.println("    ---");
+		
+		if (exits.containsKey("WEST"))
+			System.out.print("[ ] ");
+			
+		else
+			System.out.print("||| ");
+			
+		System.out.print("[+] ");
+			
+		if (exits.containsKey("EAST"))
+			System.out.print("[ ]");
+			
+		else
+			System.out.print("|||");
+			
+		if (exits.containsKey("SOUTH"))
+			System.out.println("\n    [ ]");
+		
+		else
+			System.out.println("\n    ---");
+		
+	}
+	
 	private HashMap<String, Person> entities;
 	private ArrayList<Item> items;
 	private HashMap<String, Room> exits;
