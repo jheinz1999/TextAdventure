@@ -173,9 +173,22 @@ public class Room {
 		
 	}
 	
+	public void setID(String id) {
+		
+		this.id = id;
+		
+	}
+	
+	public String getID() {
+		
+		return id;
+		
+	}
+	
 	private HashMap<String, Person> entities;
 	private ArrayList<Item> items;
 	private HashMap<String, Room> exits;
 	private String description, detailedDescription, exitText;
+	private String id;
 	
 }

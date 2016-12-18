@@ -2,6 +2,12 @@ package main;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.io.IOException;
+import java.util.List;
+import java.nio.charset.StandardCharsets;
+import java.util.Vector;
 
 import items.Item;
 import people.*;
@@ -12,6 +18,8 @@ public class Game {
 	public Game() {
 		
 		inDevice = new Scanner(System.in);
+		
+		allRooms = new Vector<Room>();
 		
 		player1 = new Player();
 		isPlaying = true;
@@ -39,78 +47,91 @@ public class Game {
 		r1.setDescription("You are in Room 1");
 		r1.setDetailedDescription("Room 1");
 		r1.setExitText("To the South is Room 2");
+		r1.setID("R1");
 		
 		Room r2 = new Room();
 		
 		r2.setDescription("You are in Room 2");
 		r2.setDetailedDescription("Room 2");
 		r2.setExitText("To the North is Room 1\nTo the South is Room 3");
+		r2.setID("R2");
 		
 		Room r3 = new Room();
 		
 		r3.setDescription("You are in Room 3");
 		r3.setDetailedDescription("Room 3");
 		r3.setExitText("To the North is Room 2\nTo the South is Room 4\nTo the East is Room 7");
+		r3.setID("R3");
 		
 		Room r4 = new Room();
 		
 		r4.setDescription("You are in Room 4");
 		r4.setDetailedDescription("Room 4");
 		r4.setExitText("To the North is Room 3\nTo the South is Room 5");
+		r4.setID("R4");
 		
 		Room r5 = new Room();
 		
 		r5.setDescription("You are in Room 5");
 		r5.setDetailedDescription("Room 5");
 		r5.setExitText("To the North is Room 4\nTo the South is Room A\nTo the East is Room 6");
+		r5.setID("R5");
 		
 		Room r6 = new Room();
 		
 		r6.setDescription("You are in Room 6");
 		r6.setDetailedDescription("Room 6");
 		r6.setExitText("To the West is Room 5");
+		r6.setID("R6");
 		
 		Room r7 = new Room();
 		
 		r7.setDescription("You are in Room 7");
 		r7.setDetailedDescription("Room 7");
 		r7.setExitText("To the East is Room 8\nTo the West is Room 3");
+		r7.setID("R7");
 		
 		Room r8 = new Room();
 		
 		r8.setDescription("You are in Room 8");
 		r8.setDetailedDescription("Room 8");
 		r8.setExitText("To the North is Room 9\nTo the West is Room 7");
+		r8.setID("R8");
 		
 		Room r9 = new Room();
 		
 		r9.setDescription("You are in Room 9");
 		r9.setDetailedDescription("Room 9");
 		r9.setExitText("To the South is Room 8\nTo the East is Room a");
+		r9.setID("R9");
 		
 		Room ra = new Room();
 		
 		ra.setDescription("You are in Room a");
 		ra.setDetailedDescription("Room a");
 		ra.setExitText("To the East is Room 9\nTo the West is Room b");
+		ra.setID("RA");
 		
 		Room rb = new Room();
 		
 		rb.setDescription("You are in Room b");
 		rb.setDetailedDescription("Room b");
 		rb.setExitText("To the South is Room c\nTo the West is Room a");
+		rb.setID("RB");
 		
 		Room rc = new Room();
 		
 		rc.setDescription("You are in Room c");
 		rc.setDetailedDescription("Room c");
 		rc.setExitText("To the North is Room b\nTo the South is Room d");
+		rc.setID("RC");
 		
 		Room rd = new Room();
 		
 		rd.setDescription("You are in Room d");
 		rd.setDetailedDescription("Room d");
 		rd.setExitText("To the North is Room c\nTo the South is Room e\nTo the East is Room g");
+		rd.setID("RD");
 		
 		// Populate rooms
 		
@@ -143,6 +164,20 @@ public class Game {
 		rc.addExit("North", rb);
 		rc.addExit("South", rd);
 		
+		allRooms.add(r1);
+		allRooms.add(r2);
+		allRooms.add(r3);
+		allRooms.add(r4);
+		allRooms.add(r5);
+		allRooms.add(r6);
+		allRooms.add(r7);
+		allRooms.add(r8);
+		allRooms.add(r9);
+		allRooms.add(ra);
+		allRooms.add(rb);
+		allRooms.add(rc);
+		allRooms.add(rd);
+		
 		currentRoom = r1;
 		
 	}
@@ -152,9 +187,6 @@ public class Game {
 		String input = new String();
 		
 		showInitialScreen();
-		
-		showInitialInfo();
-		getPlayerInfo();
 		
 		inDevice.reset();
 		
@@ -280,6 +312,7 @@ public class Game {
 			System.out.printf("%-20s\t\t%s\n", "Map", "Displays immediate surroundings");
 			System.out.printf("%-20s\t\t%s\n", "Inventory", "Displays inventory contents");
 			System.out.printf("%-20s\t\t%s\n", "Quests", "Shows your current quest");
+			System.out.printf("%-20s\t\t%s\n", "Stats", "Shows your current stats");
 			System.out.printf("%-20s\t\t%s\n", "Save", "Saves the game");
 			System.out.printf("%-20s\t\t%s\n", "Quit", "Quits the game");
 			
@@ -451,6 +484,36 @@ public class Game {
 			
 		}
 		
+		else if (words[0].equalsIgnoreCase("save")) {
+			
+			String saveData = new String();
+			
+			saveData += currentRoom.getID();
+			saveData += "\n" + player1.getName();
+			saveData += "\n" + player1.getStatsAsString();
+			
+			try {
+			
+				Files.write(Paths.get("save.bin"), saveData.getBytes());
+			
+			}
+			
+			catch (IOException e) {
+				
+				e.printStackTrace();
+				
+			}
+			
+			System.out.println("Game saved.");
+			
+		}
+		
+		else if (words[0].equalsIgnoreCase("stats")) {
+			
+			player1.printStats();
+			
+		}
+		
 		else {
 			
 			System.out.println("Command not processed.");
@@ -515,16 +578,89 @@ public class Game {
 			
 			if (input != 1) {
 				
-				System.out.println("Loading hasn't been implemented.");
+				try {
+				
+					List<String> lines = Files.readAllLines(Paths.get("save.bin"), StandardCharsets.UTF_8);
+					
+					int lineNumber = 0;
+					
+					boolean worked = false;
+					
+					for (String i : lines) {
+						
+						switch (lineNumber) {
+							
+							case 0:
+								
+								for (Room r : allRooms) {
+									
+									if (r.getID().equals(i)) {
+										
+										currentRoom = r;
+										worked = true;
+										break;
+										
+									}
+									
+								}
+								
+								break;
+								
+							case 1: 
+								
+								player1.setName(i);
+								
+								break;
+								
+							case 2:
+								
+								String[] values = i.split("\\s");
+								
+								player1.setStats(Float.parseFloat(values[0]), Float.parseFloat(values[1]), Integer.parseInt(values[2]), Integer.parseInt(values[3]), Integer.parseInt(values[4]), Integer.parseInt(values[5]), Integer.parseInt(values[6]), Integer.parseInt(values[7]), Integer.parseInt(values[8]), Integer.parseInt(values[9]));
+								
+								break;
+							
+						}
+						
+						lineNumber++;
+						
+					}
+					
+					if (!worked) {
+						
+						System.out.println("There was an error in loading the file.");
+						
+					}
+					
+					else {
+					
+						picked = true;
+						inDevice.nextLine();
+						
+					}
+				
+				}
+				
+				catch (IOException e) {
+					
+					System.out.println(e);
+					
+				}
 				
 			}
 			
-			else
+			else {
+				
+				inDevice.nextLine();
+			
+				showInitialInfo();
+				getPlayerInfo();
+				
 				picked = true;
+				
+			}
 			
 		} while (!(picked));
-		
-		inDevice.nextLine();
 		
 	}
 	
@@ -532,5 +668,6 @@ public class Game {
 	private boolean isPlaying;
 	private Room currentRoom;
 	private Scanner inDevice;
+	private Vector<Room> allRooms;
 	
 }

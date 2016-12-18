@@ -310,6 +310,8 @@ public class Player {
 	
 	public void printStats() {
 		
+		System.out.println(name + ":\n");
+		
 		System.out.printf("%-20s\t\t%d\n", "Attack", attack);	
 		System.out.printf("%-20s\t\t%d\n", "Defense", defense);	
 		System.out.printf("%-20s\t\t%d\n", "Magic", magic);	
@@ -353,6 +355,35 @@ public class Player {
 	public boolean hasCompletedQuest(int id) {
 		
 		return finishedQuests.contains(id);
+		
+	}
+	
+	public String getName() {
+		
+		return name;
+		
+	}
+	
+	public String getStatsAsString() {
+		
+		return String.valueOf(health) + " " + String.valueOf(maxHealth) + " " + String.valueOf(specialty) + " " + String.valueOf(attack) + " " +
+		String.valueOf(defense) + " " + String.valueOf(magic) + " " + String.valueOf(intelligence) + " " + String.valueOf(speed)
+	    + " " + String.valueOf(mana) + " " + String.valueOf(maxMana);
+		
+	}
+	
+	public void setStats(float health, float maxHealth, int specialty, int attack, int defense, int magic, int intelligence, int speed, int mana, int maxMana) {
+		
+		this.health = health;
+		this.maxHealth = maxHealth;
+		this.specialty = specialty;
+		this.attack = attack;
+		this.defense = defense;
+		this.magic = magic;
+		this.intelligence = intelligence;
+		this.speed = speed;
+		this.mana = mana;
+		this.maxMana = maxMana;
 		
 	}
 	
