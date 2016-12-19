@@ -1,1 +1,2 @@
 javac */*.java
+jar cvfe TextAdventure.jar main.Main */*.class
