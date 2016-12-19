@@ -5,6 +5,7 @@ public class Item {
 	public Item() {
 		
 		name = new String();
+		isEquippable = false;
 		
 	}
 
@@ -32,7 +33,33 @@ public class Item {
 		
 	}
 	
+	public void setID(int id) {
+		
+		this.id = id;
+		
+	}
+	
+	public int getID() {
+		
+		return id;
+		
+	}
+	
+	public void setEquippable() {
+		
+		isEquippable = true;
+		
+	}
+	
+	public boolean isEquippable() {
+		
+		return isEquippable;
+		
+	}
+	
 	private String name;
 	private String description;
+	private int id;
+	private boolean isEquippable;
 	
 }

@@ -103,6 +103,22 @@ public class Inventory {
 		
 	}
 	
+	public String getInvAsString() {
+		
+		String output = new String();
+		
+		output += itemCounts.size() + " ";
+		
+		for (Item i : items) {
+			
+			output += i.getID() + " " + itemCounts.get(items.indexOf(i)) + " ";
+			
+		}
+		
+		return output;
+		
+	}
+	
 	private ArrayList<Item> items;
 	private ArrayList<Integer> itemCounts;
 	

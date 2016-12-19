@@ -1,10 +1,14 @@
 package main;
 
+import items.ItemList;
+
 import java.util.Random;
 
 public class Main {
 	
 	public static void main(String[] args) {
+		
+		ItemList i = new ItemList();
 		
 		randGen = new Random();
 		

@@ -9,7 +9,7 @@ import java.util.List;
 import java.nio.charset.StandardCharsets;
 import java.util.Vector;
 
-import items.Item;
+import items.*;
 import people.*;
 import rooms.*;
 
@@ -32,13 +32,6 @@ public class Game {
 		p1.setPhrase("Greetings, traveler. I am the quest giver.\n" +
 		"I lost my peanut butter sandwich. Can you find it for me?");
 		p1.setDescription("A smelly hobo with a santa hat");
-		
-		// Item initializations
-		
-		Item i = new Item();
-		
-		i.setName("Sandwich");
-		i.setDescription("A fresh peanut butter sandwich.");
 		
 		// Room initializations
 		
@@ -136,7 +129,8 @@ public class Game {
 		// Populate rooms
 		
 		r1.addEntity("QuestGiver", p1);
-		r6.addItem(i);
+		r6.addItem(ItemList.getItem(1));
+		r3.addItem(ItemList.getItem(2));
 		
 		// Exits
 		
@@ -376,22 +370,32 @@ public class Game {
 			}
 			
 			else {
-			
-				if (currentRoom.hasEntity(words[1])) {
+				
+				String target = new String();
+				
+				target += words[1];
+				
+				for (int i = 2; i < words.length; i++) {
 					
-					currentRoom.getEntity(words[1]).sayDescription();
+					target += " " + words[i];
+					
+				}
+			
+				if (currentRoom.hasEntity(target)) {
+					
+					currentRoom.getEntity(target).sayDescription();
 					
 				}
 				
-				else if (currentRoom.hasItem(words[1])) {
+				else if (currentRoom.hasItem(target)) {
 					
-					currentRoom.getItem(words[1]).sayDescription();
+					currentRoom.getItem(target).sayDescription();
 					
 				}
 				
 				else {
 					
-					System.out.println("There is no " + words[1] + " here.");
+					System.out.println("There is no " + target + " here.");
 					
 				}
 				
@@ -407,7 +411,7 @@ public class Game {
 		
 		else if (words[0].equalsIgnoreCase("get")) {
 			
-			if (words.length != 2) {
+			if (words.length == 1) {
 				
 				System.out.println("Get what?");
 				
@@ -415,16 +419,26 @@ public class Game {
 			
 			else {
 				
-				if (currentRoom.hasItem(words[1])) {
+				String target = new String();
+				
+				target += words[1];
+				
+				for (int i = 2; i < words.length; i++) {
 					
-					player1.getInventory().addItem(currentRoom.getItem(words[1]), 1);
-					currentRoom.removeItem(currentRoom.getItem(words[1]));
+					target += " " + words[i];
+					
+				}
+				
+				if (currentRoom.hasItem(target)) {
+					
+					player1.getInventory().addItem(currentRoom.getItem(target), 1);
+					currentRoom.removeItem(currentRoom.getItem(target));
 					
 				}
 				
 				else {
 					
-					System.out.println("There is no " + words[1] + " here.");
+					System.out.println("There is no " + target + " here.");
 					
 				}
 				
@@ -491,6 +505,7 @@ public class Game {
 			saveData += currentRoom.getID();
 			saveData += "\n" + player1.getName();
 			saveData += "\n" + player1.getStatsAsString();
+			saveData += "\n" + player1.getInventory().getInvAsString();
 			
 			try {
 			
@@ -584,20 +599,21 @@ public class Game {
 					
 					int lineNumber = 0;
 					
-					boolean worked = false;
+					boolean worked = true;
 					
 					for (String i : lines) {
 						
+						String[] values = i.split("\\s");
+						
 						switch (lineNumber) {
 							
-							case 0:
+							case 0: // Current room
 								
 								for (Room r : allRooms) {
 									
 									if (r.getID().equals(i)) {
 										
 										currentRoom = r;
-										worked = true;
 										break;
 										
 									}
@@ -606,17 +622,27 @@ public class Game {
 								
 								break;
 								
-							case 1: 
+							case 1: // Player name
 								
 								player1.setName(i);
 								
 								break;
 								
-							case 2:
-								
-								String[] values = i.split("\\s");
+							case 2: // Player stats
 								
 								player1.setStats(Float.parseFloat(values[0]), Float.parseFloat(values[1]), Integer.parseInt(values[2]), Integer.parseInt(values[3]), Integer.parseInt(values[4]), Integer.parseInt(values[5]), Integer.parseInt(values[6]), Integer.parseInt(values[7]), Integer.parseInt(values[8]), Integer.parseInt(values[9]));
+								
+								break;
+								
+							case 3: // Inventory
+								
+								int itemsToAdd = Integer.parseInt(values[0]);
+								
+								for (int j = 0; j < itemsToAdd; j++) {
+									
+									player1.getInventory().addItem(ItemList.getItem(Integer.parseInt(values[j * 2 + 1])), Integer.parseInt(values[(j * 2) + 2]));
+									
+								}
 								
 								break;
 							
