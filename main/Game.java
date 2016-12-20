@@ -129,8 +129,6 @@ public class Game {
 		// Populate rooms
 		
 		r1.addEntity("QuestGiver", p1);
-		r6.addItem(ItemList.getItem(1));
-		r3.addItem(ItemList.getItem(2));
 		
 		// Exits
 		
@@ -506,10 +504,18 @@ public class Game {
 			saveData += "\n" + player1.getName();
 			saveData += "\n" + player1.getStatsAsString();
 			saveData += "\n" + player1.getInventory().getInvAsString();
+			saveData += "\n";
+			
+			for (Room r : allRooms) {
+				
+				if (r.getItemCount() > 0)
+					saveData += r.save() + " ";
+				
+			}
 			
 			try {
 			
-				Files.write(Paths.get("save.bin"), saveData.getBytes());
+				Files.write(Paths.get("save/save.bin"), saveData.getBytes());
 			
 			}
 			
@@ -595,7 +601,7 @@ public class Game {
 				
 				try {
 				
-					List<String> lines = Files.readAllLines(Paths.get("save.bin"), StandardCharsets.UTF_8);
+					List<String> lines = Files.readAllLines(Paths.get("save/save.bin"), StandardCharsets.UTF_8);
 					
 					int lineNumber = 0;
 					
@@ -645,6 +651,45 @@ public class Game {
 								}
 								
 								break;
+								
+							case 4: // Rooms
+							
+								int currentWord = 0;
+								
+								for (Room r : allRooms) {
+									
+									String id = values[currentWord];
+									
+									System.out.println("lookin man. im at " + r.getID());
+									
+									if (r.getID().equals(id)) {
+										
+										System.out.println("Inside room " + r.getID());
+										
+										currentWord++;
+										
+										int count = Integer.parseInt(values[currentWord]);
+										
+										for (int j = 0; j < count; j++) {
+											
+											System.out.println("Looking for #" + j + 1 + "/" + count);
+											
+											currentWord++;
+											
+											r.addItem(ItemList.getItem(Integer.parseInt(values[currentWord])));
+											
+											currentWord++;
+											
+											if (currentWord == values.length)
+												currentWord--;
+											
+										}
+										
+									}
+									
+								}
+								
+								break;
 							
 						}
 						
@@ -657,6 +702,8 @@ public class Game {
 						System.out.println("There was an error in loading the file.");
 						
 					}
+					
+					
 					
 					else {
 					
@@ -681,6 +728,24 @@ public class Game {
 			
 				showInitialInfo();
 				getPlayerInfo();
+				
+				// Populate rooms
+				
+				for (Room r : allRooms) {
+					
+					if (r.getID().equals("R6")) {
+						
+						r.addItem(ItemList.getItem(1));
+						
+					}
+					
+					if (r.getID().equals("R3")) {
+						
+						r.addItem(ItemList.getItem(2));
+						
+					}
+					
+				}
 				
 				picked = true;
 				

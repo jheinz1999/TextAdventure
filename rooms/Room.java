@@ -185,6 +185,28 @@ public class Room {
 		
 	}
 	
+	public String save() {
+		
+		String returnVal = new String();
+		
+		returnVal += items.size();
+		
+		for (Item i : items) {
+			
+			returnVal += " " + i.getID();
+			
+		}
+		
+		return id + " " + returnVal;
+		
+	}
+	
+	public int getItemCount() {
+		
+		return items.size();
+		
+	}
+	
 	private HashMap<String, Person> entities;
 	private ArrayList<Item> items;
 	private HashMap<String, Room> exits;
