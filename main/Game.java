@@ -660,19 +660,13 @@ public class Game {
 									
 									String id = values[currentWord];
 									
-									System.out.println("lookin man. im at " + r.getID());
-									
 									if (r.getID().equals(id)) {
-										
-										System.out.println("Inside room " + r.getID());
 										
 										currentWord++;
 										
 										int count = Integer.parseInt(values[currentWord]);
 										
 										for (int j = 0; j < count; j++) {
-											
-											System.out.println("Looking for #" + j + 1 + "/" + count);
 											
 											currentWord++;
 											
